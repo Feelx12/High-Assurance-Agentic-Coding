@@ -86,8 +86,6 @@ Modes enforce it.
   export PATH="$HOME/bin/joern/joern-cli:$PATH"
   ```
 
-> **Note:** `joern-cli.zip` is listed in `.gitignore` and should never be committed. The install script downloads it automatically.
-
 ---
 
 ## Installation
