@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TraceabilityReport",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "commit_hash",
+    "timestamp",
+    "change_class",
+    "risk_level",
+    "structural_truth",
+    "behavioral_truth",
+    "verification_truth",
+    "architecture_drift",
+    "final_decision"
+  ],
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "parent_artifact": { "type": "string" },
+    "derived_from": { "type": "string" },
+    "commit_hash": { "type": "string" },
+    "graph_snapshot": { "type": "string" },
+    "alloy_validation": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "agent_version": { "type": "string" },
+    "prompt": { "type": "string" },
+    "change_class": {
+      "type": "string",
+      "enum": ["CLASS_0", "CLASS_1", "CLASS_2", "CLASS_3"]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["LOW", "MODERATE", "HIGH", "CRITICAL"]
+    },
+    "structural_truth": {
+      "type": "object",
+      "required": ["graph_snapshot_id", "impacted_files", "drift_result"],
+      "properties": {
+        "graph_snapshot_id": { "type": "string" },
+        "impacted_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "impacted_symbols": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "drift_result": {
+          "type": "string",
+          "enum": ["NONE", "EXPECTED", "REVIEW_REQUIRED", "CRITICAL"]
+        },
+        "added_nodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "removed_nodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "new_external_dependencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "behavioral_truth": {
+      "type": "object",
+      "required": ["alloy_validation_id", "all_assertions_pass"],
+      "properties": {
+        "alloy_validation_id": { "type": "string" },
+        "assertions_checked": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "all_assertions_pass": { "type": "boolean" },
+        "counterexamples": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "formal_model_weakened": { "type": "boolean" }
+      }
+    },
+    "verification_truth": {
+      "type": "object",
+      "required": ["tests_run", "all_tests_pass", "lint_pass", "typecheck_pass"],
+      "properties": {
+        "tests_run": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "all_tests_pass": { "type": "boolean" },
+        "lint_pass": { "type": "boolean" },
+        "typecheck_pass": { "type": "boolean" },
+        "security_scan_pass": { "type": "boolean" },
+        "ci_status": {
+          "type": "string",
+          "enum": ["PASS", "FAIL", "SKIPPED"]
+        },
+        "coverage": { "type": "string" }
+      }
+    },
+    "code_changes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "architecture_drift": {
+      "type": "string",
+      "enum": ["NONE", "EXPECTED", "REVIEW_REQUIRED", "CRITICAL"]
+    },
+    "assumptions_resolved": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "human_approval": { "type": "string" },
+    "final_decision": {
+      "type": "string",
+      "enum": ["PASS", "FAIL"]
+    },
+    "replay_inputs": {
+      "type": "object",
+      "properties": {
+        "original_prompt": { "type": "string" },
+        "commit_hash": { "type": "string" },
+        "graph_snapshot_id": { "type": "string" },
+        "alloy_model_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "mcp_tool_outputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "fixture_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "test_commands": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

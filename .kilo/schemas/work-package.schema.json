@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkPackage",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "change_class",
+    "risk_level",
+    "autonomy_level",
+    "commit_hash",
+    "graph_snapshot",
+    "allowed_files",
+    "forbidden_files",
+    "structural_truth",
+    "behavioral_truth",
+    "required_tests",
+    "success_criteria",
+    "stop_conditions"
+  ],
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "parent_artifact": { "type": "string" },
+    "derived_from": { "type": "string" },
+    "commit_hash": { "type": "string" },
+    "graph_snapshot": { "type": "string" },
+    "alloy_validation": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "agent_version": { "type": "string" },
+    "change_class": {
+      "type": "string",
+      "enum": ["CLASS_0", "CLASS_1", "CLASS_2", "CLASS_3"]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["LOW", "MODERATE", "HIGH", "CRITICAL"]
+    },
+    "autonomy_level": {
+      "type": "string",
+      "enum": ["LEVEL_0", "LEVEL_1", "LEVEL_2", "LEVEL_3", "LEVEL_4", "LEVEL_5"]
+    },
+    "allowed_files": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "forbidden_files": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "structural_truth": {
+      "type": "object",
+      "required": ["graph_snapshot_id", "impacted_files", "impacted_symbols"],
+      "properties": {
+        "graph_snapshot_id": { "type": "string" },
+        "impacted_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "impacted_symbols": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "upstream_callers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "downstream_dependencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "mutation_points": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "data_flows": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "related_tests": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "risk_level": {
+          "type": "string",
+          "enum": ["LOW", "MODERATE", "HIGH", "CRITICAL"]
+        }
+      }
+    },
+    "behavioral_truth": {
+      "type": "object",
+      "required": ["alloy_validation_id", "alloy_files", "assertions_checked"],
+      "properties": {
+        "alloy_validation_id": { "type": "string" },
+        "alloy_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "sigs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "facts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "predicates_run": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "assertions_checked": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "all_assertions_pass": { "type": "boolean" },
+        "counterexamples": {
+          "type": "array",
+          "items": { "type": "object" }
+        }
+      }
+    },
+    "human_readable_summary": { "type": "string" },
+    "required_tests": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "required_fixtures": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "stop_conditions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  }
+}

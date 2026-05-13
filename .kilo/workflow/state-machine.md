@@ -1,0 +1,72 @@
+# High-Assurance Workflow State Machine
+
+## Valid States
+
+IDLE
+GROUNDING
+DEBUGGING
+READY_FOR_IMPLEMENTATION
+IMPLEMENTATION
+READY_FOR_VERIFICATION
+VERIFICATION
+PASSED
+FAILED
+BLOCKED
+RETURN_TO_GROUNDING
+DEPLOY                         ← external state; never entered by agent autonomously
+
+## Valid Transitions
+
+IDLE → GROUNDING
+IDLE → DEBUGGING
+IDLE → IMPLEMENTATION for Class 0 only
+
+GROUNDING → BLOCKED
+GROUNDING → READY_FOR_IMPLEMENTATION
+
+READY_FOR_IMPLEMENTATION → IMPLEMENTATION
+
+IMPLEMENTATION → BLOCKED
+IMPLEMENTATION → READY_FOR_VERIFICATION
+
+READY_FOR_VERIFICATION → VERIFICATION
+
+VERIFICATION → PASSED
+VERIFICATION → FAILED
+VERIFICATION → RETURN_TO_GROUNDING
+
+FAILED → GROUNDING
+BLOCKED → GROUNDING
+RETURN_TO_GROUNDING → GROUNDING
+
+## Illegal Transitions
+
+IMPLEMENTATION → PASSED
+IMPLEMENTATION → DEPLOY
+GROUNDING → VERIFICATION
+VERIFICATION → IMPLEMENTATION without grounding refresh
+CLASS_3 → IMPLEMENTATION without Formal Work Package
+CLASS_2 → IMPLEMENTATION without Regression Addendum
+
+## Mandatory Artifacts Per State
+
+GROUNDING:
+- Freshness Report
+- Structural Truth
+- Alloy Validation
+- Human-Readable Handoff
+- Formal Work Package
+
+DEBUGGING:
+- Debugging Report
+- Regression Test Result where practical
+
+IMPLEMENTATION:
+- Scope Confirmation
+- Test Plan
+- Implementation Summary
+
+VERIFICATION:
+- Traceability Report
+- Drift Analysis
+- CI Results
