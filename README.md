@@ -1,3 +1,9 @@
+[Clickable Text](https://www.linkedin.com/in/felix-cortez)
+
+
+<img width="1536" height="1024" alt="High-Assurance Agentic Coding" src="https://github.com/user-attachments/assets/a308d15f-eac3-4042-aed2-dc32477f9209" />
+
+
 # High-Assurance Agentic Coding
 
 > **The Future Is Formally Verified.**
