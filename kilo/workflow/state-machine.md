@@ -40,6 +40,11 @@ AWAITING_USER_DECISION → BLOCKED             ← user chose Option B (pause & 
 
 DEGRADED_PROCEED → GROUNDING                 ← continue grounding with degraded structural truth
 
+DEBUGGING → IMPLEMENTATION                  ← IN_SCOPE_IMPLEMENTATION_DEFECT only (narrow fix)
+DEBUGGING → GROUNDING                       ← OUT_OF_SCOPE_NEW_FEATURE, MISSED_GROUNDING, or HUMAN_ASSUMPTION
+DEBUGGING → VERIFICATION                    ← TOOLING_OR_TEST_CONFIG_ISSUE (fix directly)
+DEBUGGING → BLOCKED                         ← no valid resolution path found
+
 READY_FOR_IMPLEMENTATION → IMPLEMENTATION
 
 READY_FOR_IMPLEMENTATION → IMPLEMENTATION
@@ -65,6 +70,8 @@ GROUNDING → VERIFICATION
 VERIFICATION → IMPLEMENTATION without grounding refresh
 CLASS_3 → IMPLEMENTATION without Formal Work Package
 CLASS_2 → IMPLEMENTATION without Regression Addendum
+DEBUGGING → IMPLEMENTATION for OUT_OF_SCOPE or MISSED_GROUNDING classification
+DEBUGGING → VERIFICATION for anything other than TOOLING_OR_TEST_CONFIG_ISSUE
 
 ## Mandatory Artifacts Per State
 
@@ -109,6 +116,19 @@ BLOCKED:
 - The agent MUST produce a Blocking Reason Report before exiting.
 - **Timeout:** If BLOCKED persists for more than 7 days, the state should be escalated to human attention. The agent-manager or operator should review and either provide approval or close the workflow.
 - **Exit paths:** BLOCKED → GROUNDING (when the blocking condition is resolved) or manual closure.
+
+## DEBUGGING State Rules
+
+- Entered when a defect is found during or after implementation.
+- The agent MUST classify the issue relationship as one of the five types before proposing any fix.
+- The agent MUST review the current Formal Work Package and Implementation Summary to determine scope.
+- **IN_SCOPE_IMPLEMENTATION_DEFECT:** may produce a narrow Implementation Fix Handoff and route to IMPLEMENTATION. Fix must stay inside allowed files.
+- **OUT_OF_SCOPE_NEW_FEATURE:** must route to GROUNDING via New Grounding Handoff. Do NOT implement.
+- **MISSED_GROUNDING_REQUIREMENT:** must route to GROUNDING as Class 2 Formal Regression.
+- **HUMAN_ASSUMPTION_FAILURE:** must escalate to human approval before routing to GROUNDING.
+- **TOOLING_OR_TEST_CONFIG_ISSUE:** may fix directly and route to VERIFICATION (no scope expansion).
+- **Mandatory Artifacts:** Debugging Report, Debugging Next-Steps Handoff, plus the appropriate handoff based on scope classification (Implementation Fix, New Grounding, or Formal Regression Addendum).
+- **Core rule:** Diagnose broadly, recommend narrowly.
 
 ## AWAITING_USER_DECISION State Rules
 
