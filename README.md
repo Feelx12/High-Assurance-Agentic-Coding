@@ -35,6 +35,10 @@ User request
 /classify ────► Class 0  ──► /implementation (fast path)
   │
   ├──► Class 1  ──► /debugging + minimal truth check
+  │                    scope gate classifies issue:
+  │                    ├─ IN_SCOPE defect  → narrow fix → /implementation
+  │                    ├─ OUT_OF_SCOPE     → /grounding (new feature)
+  │                    └─ MISSED_REQUIREMENT → /grounding (Class 2)
   │
   ├──► Class 2  ──► /grounding (Formal Regression)
   │
@@ -115,7 +119,7 @@ Modes enforce it.
 
 ## Installation
 
-### 1. Copy `.kilo/` into your project root. The folder in the repo does not have the '.' and must be added for it to work. 
+### 1. Copy `.kilo/` into your project root
 
 | Platform | Command |
 |---|---|
@@ -189,7 +193,7 @@ Type `/` in the Kilo chat to invoke any workflow mode. **Always run `/plan` firs
 | `/plan` | **Plan Mode** — requirements clarification, deconstruction, and task routing. Always run first. |
 | `/classify` | Fast-path: classify a change and return required mode (2-3 lines, no implementation) |
 | `/grounding` | Formal Grounding Mode — structural + behavioral truth |
-| `/debugging` | Root Cause Analysis — evidence-based debugging |
+| `/debugging` | Root Cause Analysis — evidence-based debugging with scope classification (IN_SCOPE / OUT_OF_SCOPE / MISSED_REQUIREMENT) and routing |
 | `/implementation` | Constrained Implementation Mode |
 | `/verification` | Verification Traceability Mode |
 | `/state-machine` | Query the workflow state machine |
@@ -335,7 +339,9 @@ See `.kilo/artifact-storage.md` for full naming, versioning, and replay conventi
     freshness-report.md
     grounding-next-steps-handoff.md
     human-readable-implementation-handoff.md
+    implementation-fix-handoff.md            ← Narrow fix from Debugging (IN_SCOPE)
     implementation-next-steps-handoff.md
+    new-grounding-handoff.md                 ← Escalation from Debugging (OUT_OF_SCOPE)
     regression-addendum.md
     traceability-report.md
     user-next-steps-handoff.md
