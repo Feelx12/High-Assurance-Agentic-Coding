@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@kilocode/plugin": "7.2.52",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AlloyValidation",
+  "type": "object",
+  "required": [
+    "validation_id",
+    "model_file",
+    "commit_hash",
+    "timestamp",
+    "tool_version",
+    "status"
+  ],
+  "properties": {
+    "validation_id": { "type": "string" },
+    "model_file": { "type": "string" },
+    "commit_hash": { "type": "string" },
+    "graph_snapshot": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "tool_version": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "PARTIAL"]
+    },
+    "scope": { "type": "integer" },
+    "predicates_run": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "assertions_checked": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "predicate_results": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["SAT", "UNSAT", "ERROR"]
+      }
+    },
+    "assertion_results": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["NO_COUNTEREXAMPLE", "COUNTEREXAMPLE_FOUND", "ERROR"]
+      }
+    },
+    "counterexamples": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "generated_instances": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  }
+}

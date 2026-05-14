@@ -1,0 +1,67 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "mcp": {
+    "joern": {
+      "type": "local",
+      "command": ["node", ".kilo/joern.js"],
+      "environment": {
+        "WORKSPACE": "${workspaceFolder}"
+      }
+    },
+    "alloy": {
+      "type": "local",
+      "command": ["node", ".kilo/alloy.js"],
+      "environment": {
+        "WORKSPACE": "${workspaceFolder}"
+      }
+    },
+    "verification": {
+      "type": "local",
+      "command": ["node", ".kilo/verification.js"],
+      "environment": {
+        "WORKSPACE": "${workspaceFolder}"
+      }
+    }
+  },
+  "command": {
+    "plan": {
+      "template": "You are in Plan Mode — the first step of every workflow. Your job is requirements clarification and task deconstruction. Do NOT implement, debug, or ground.\n\n### Steps\n1. Parse the user request and identify ambiguities.\n2. Ask clarifying questions for anything unclear (scope, constraints, edge cases, priorities).\n3. Once clarified, deconstruct the request into discrete, ordered, classifiable sub-tasks.\n4. Classify each sub-task per .kilo/rules/change-classification.md.\n5. Route each sub-task to the correct mode (grounding / debugging / implementation).\n6. Produce a structured plan and save it to .kilo/plans/<timestamp>-<slug>.md.\n\n### Output\n## Plan: <title>\n\n### Clarified Requirements\n- <requirement>\n\n### Sub-Tasks\n| # | Task | Class | Mode | Depends On |\n|---|------|-------|------|------------|\n\n### Implementation Order\n<ordered list>\n\n### Next Step\n/classify or /grounding (depending on highest class)\n\nRequest:\n\n{{{input}}}",
+      "description": "Plan Mode — requirements clarification, deconstruction, and task routing. Always run first."
+    },
+    "grounding": {
+      "template": "Please follow the instructions in .kilo/modes/grounding-mode.md to execute Formal Grounding Mode on the following request:\n\n{{{input}}}",
+      "description": "Run Formal Grounding Mode"
+    },
+    "debugging": {
+      "template": "Please follow the instructions in .kilo/modes/debugging-mode.md to execute Root Cause Analysis Debugging Mode on the following request:\n\n{{{input}}}",
+      "description": "Run Root Cause Analysis Debugging Mode"
+    },
+    "implementation": {
+      "template": "Please follow the instructions in .kilo/modes/implementation-mode.md to execute Constrained Implementation Mode on the following request:\n\n{{{input}}}",
+      "description": "Run Constrained Implementation Mode"
+    },
+    "verification": {
+      "template": "Please follow the instructions in .kilo/modes/verification-mode.md to execute Verification Traceability Mode on the following request:\n\n{{{input}}}",
+      "description": "Run Verification Traceability Mode"
+    },
+    "state-machine": {
+      "template": "Refer to the High-Assurance Workflow State Machine defined in .kilo/workflow/state-machine.md. Report the current workflow state and valid next transitions for the following context:\n\n{{{input}}}",
+      "description": "Query or advance the High-Assurance Workflow State Machine"
+    },
+    "classify": {
+      "template": "Classify the following request using the rules in .kilo/rules/change-classification.md. Output ONLY:\n\n## Change Classification\n- Class: (0 / 1 / 2 / 3)\n- Label: (Trivial / Bug Fix / Regression / Feature)\n- Reason: (one sentence)\n- Required mode: (implementation / debugging / grounding)\n- Escalation triggers present: (list any, or None)\n\nRequest:\n\n{{{input}}}",
+      "description": "Fast-path: classify a change and return the required mode (no implementation)"
+    },
+    "status": {
+      "template": "You are the Workflow Status Reporter. Summarize the current state of the active High-Assurance workflow using .kilo/workflow/state-machine.md and any artifacts present in the workspace.\n\nReport:\n1. Current State (from the state machine)\n2. Active Artifacts (list any freshness reports, work packages, traceability reports present)\n3. Pending Gates (what is required before advancing)\n4. Next Valid Transitions\n5. Any blockers or expired truth artifacts\n\nContext:\n\n{{{input}}}",
+      "description": "Report current workflow state, active artifacts, pending gates, and next valid transitions"
+    }
+  },
+  "instructions": [
+    ".kilo/AGENTS.md",
+    ".kilo/rules/*.md",
+    ".kilo/policies/*.md",
+    ".kilo/formal-coverage/*.md",
+    ".kilo/templates/*.md"
+  ]
+}

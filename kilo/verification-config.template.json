@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "_comment": "High-Assurance Agentic Coding — Verification Stack Configuration",
+  "_instructions": "Copy this file to your project as .kilo/verification-config.json and fill in the values for your stack.",
+
+  "stack": "node",
+
+  "commands": {
+    "test":             "npm test -- --passWithNoTests",
+    "test_integration": "npm run test:integration",
+    "test_scope":       "npm test -- --testPathPattern=\"{scope}\" --passWithNoTests",
+    "lint":             "npx eslint . --format compact",
+    "typecheck":        "npx tsc --noEmit",
+    "static_analysis":  null,
+    "security_scan":    "npm audit --json",
+    "build":            "npm run build"
+  },
+
+  "_examples": {
+    "python": {
+      "stack": "python",
+      "commands": {
+        "test":             "python -m pytest -v",
+        "test_integration": "python -m pytest -v -m integration",
+        "test_scope":       "python -m pytest \"{scope}\" -v",
+        "lint":             "python -m ruff check .",
+        "typecheck":        "python -m mypy .",
+        "static_analysis":  "python -m bandit -r .",
+        "security_scan":    "pip-audit",
+        "build":            null
+      }
+    },
+    "go": {
+      "stack": "go",
+      "commands": {
+        "test":             "go test ./...",
+        "test_integration": "go test -tags=integration ./...",
+        "test_scope":       "go test ./{scope}/...",
+        "lint":             "golangci-lint run",
+        "typecheck":        "go vet ./...",
+        "static_analysis":  "staticcheck ./...",
+        "security_scan":    "govulncheck ./...",
+        "build":            "go build ./..."
+      }
+    },
+    "rust": {
+      "stack": "rust",
+      "commands": {
+        "test":             "cargo test",
+        "test_integration": "cargo test --test '*'",
+        "test_scope":       "cargo test {scope}",
+        "lint":             "cargo clippy",
+        "typecheck":        "cargo check",
+        "static_analysis":  null,
+        "security_scan":    "cargo audit",
+        "build":            "cargo build"
+      }
+    }
+  }
+}
