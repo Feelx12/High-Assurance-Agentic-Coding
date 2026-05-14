@@ -115,7 +115,7 @@ Modes enforce it.
 
 ## Installation
 
-### 1. Copy `.kilo/` into your project root
+### 1. Copy `.kilo/` into your project root. The folder in the repo does not have the '.' and must be added for it to work. 
 
 | Platform | Command |
 |---|---|
