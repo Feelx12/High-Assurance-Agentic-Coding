@@ -62,6 +62,10 @@ After `/plan`, run `/classify` on the highest-class sub-task. Use `/classify` fo
 /classify ───► Class 0  ──► /implementation (fast path)
        │
        ├──► Class 1  ──► /debugging
+       │                    scope gate classifies:
+       │                    ├─ IN_SCOPE     → /implementation
+       │                    ├─ OUT_OF_SCOPE → Traditional Feature Plan → /grounding
+       │                    └─ MISSED_REQ   → /grounding (Class 2)
        │
        ├──► Class 2  ──► /grounding (Formal Regression)
        │
@@ -115,13 +119,24 @@ Step 4: User handoff (implementation-next-steps-handoff.md)
 ```
 Step 1: /classify ──► confirms Class 1
 Step 2: /debugging
+         ├── Load current context (FWP, Implementation Summary, Grounding Report)
+         ├── Debug Scope Gate — classify issue as:
+         │    ├── IN_SCOPE_IMPLEMENTATION_DEFECT  → proceed to fix
+         │    ├── OUT_OF_SCOPE_NEW_FEATURE        → route to /grounding
+         │    ├── MISSED_GROUNDING_REQUIREMENT     → route to /grounding (Class 2)
+         │    ├── HUMAN_ASSUMPTION_FAILURE         → escalate + /grounding
+         │    └── TOOLING_OR_TEST_CONFIG_ISSUE     → fix directly
          ├── Reproduce failure
          ├── Root cause analysis (with evidence)
          ├── Minimal truth check (Joern graph query only if shared state/data flow)
-         ├── Minimal fix (no refactors, no scope creep)
-         └── Regression test
-Step 3: Debugging Report
+         ├── [If IN_SCOPE] Minimal fix (no refactors, no scope creep)
+         └── [If IN_SCOPE] Regression test
+Step 3: Debugging Report (includes scope classification and routing decision)
 Step 4: User handoff (debugging-next-steps-handoff.md)
+         ├── If IN_SCOPE: attach Implementation Fix Handoff → /implementation
+         ├── If OUT_OF_SCOPE: attach New Grounding Handoff → Traditional Feature Plan → /grounding
+         ├── If MISSED_GROUNDING: route to /grounding as Class 2
+         └── If TOOLING: route to /verification directly
 ```
 
 ---
@@ -389,13 +404,22 @@ Verification mode rules: .kilo/modes/verification-mode.md
 
 ### From Debugging → (Next Mode)
 
+**Routing depends on scope classification:**
+
+| Classification | Next Mode | Handoff |
+|---|---|---|
+| IN_SCOPE_IMPLEMENTATION_DEFECT | `/implementation` | Implementation Fix Handoff |
+| OUT_OF_SCOPE_NEW_FEATURE | Traditional Feature Plan → `/grounding` | New Grounding Handoff |
+| MISSED_GROUNDING_REQUIREMENT | `/grounding` (Class 2) | New Grounding Handoff |
+| HUMAN_ASSUMPTION_FAILURE | Human escalation → `/grounding` | Escalation report |
+| TOOLING_OR_TEST_CONFIG_ISSUE | `/verification` | Debugging Report |
+
 ```
-<grounding | implementation | verification>
-
-<Ready-to-use prompt based on fix severity and risk level>
-
 ### Key References
 Debugging report: <path>
+Issue classification: <IN_SCOPE / OUT_OF_SCOPE / MISSED_GROUNDING / HUMAN_ASSUMPTION / TOOLING>
+Implementation Fix Handoff: <path> (if IN_SCOPE)
+New Grounding Handoff: <path> (if escalation)
 Test results: <path>
 ```
 
@@ -454,7 +478,7 @@ Plan files from `/plan` mode are stored in `.kilo/plans/`. See `.kilo/artifact-s
 | `/plan` | **Plan Mode** — requirements clarification, deconstruction, task routing. Always run first. |
 | `/classify` | Fast-path: classify and return required mode |
 | `/grounding` | Formal Grounding — structural + behavioral truth |
-| `/debugging` | Root cause analysis — evidence-based |
+| `/debugging` | Root cause analysis — evidence-based with scope classification and routing |
 | `/implementation` | Constrained implementation |
 | `/verification` | Full verification + traceability |
 | `/status` | Current workflow state, artifacts, pending gates |
