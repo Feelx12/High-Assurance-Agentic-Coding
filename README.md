@@ -1,5 +1,7 @@
-<img width="1536" height="1024" alt="High-Assurance Agentic Coding" src="https://github.com/user-attachments/assets/a308d15f-eac3-4042-aed2-dc32477f9209" />
 [![Connect with me on LinkedIn](https://img.shields.io/badge/Connect%20with%20me%20on-LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/felix-cortez)
+
+<img width="1536" height="1024" alt="High-Assurance Agentic Coding" src="https://github.com/user-attachments/assets/a308d15f-eac3-4042-aed2-dc32477f9209" />
+
 
 # High-Assurance Agentic Coding
 
