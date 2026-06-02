@@ -149,12 +149,19 @@ Each mode runs at the model tier matching its cognitive demand.
 
 ## Installation
 
-### 1. Copy `.kilo/` into your project root
+### 1. Copy the workflow into your project root
+
+To share or install this workflow, you need to copy the `.kilo/` directory **and** the `kilo.json` file.
+
+> [!IMPORTANT]
+> The `kilo.json` file **must** be placed in the absolute root of your new project. If you bundle it inside `.kilo/` for sharing, the recipient must move it back to their project root. Kilo will not discover workflows or servers if the config is not in the root.
+>
+> **RAG Data:** Exclude generated state when sharing. Do not copy `.kilo/.rag-index-state.json` or the `.kilo/qdrant_storage/` folder.
 
 | Platform | Command |
 |---|---|
-| macOS / Linux | `cp -r /path/to/this-repo/.kilo /your/project/.kilo` |
-| Windows (PowerShell) | `Copy-Item -Recurse C:\path\to\this-repo\.kilo C:\your\project\.kilo` |
+| macOS / Linux | `cp -r /path/to/this-repo/.kilo /your/project/.kilo && cp /path/to/this-repo/kilo.json /your/project/kilo.json` |
+| Windows (PowerShell) | `Copy-Item -Recurse C:\path\to\this-repo\.kilo C:\your\project\.kilo; Copy-Item C:\path\to\this-repo\kilo.json C:\your\project\kilo.json` |
 
 ### 2. Install MCP server dependencies
 
