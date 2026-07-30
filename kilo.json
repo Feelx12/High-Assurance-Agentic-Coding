@@ -1,5 +1,7 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
+  "autonomousAgent": ".kilo/agents/autonomous.md",
+  "observer": ".kilo/observers/run-observer.md",
   "command": {
     "plan": {
       "agent": "ha-plan-mode",
